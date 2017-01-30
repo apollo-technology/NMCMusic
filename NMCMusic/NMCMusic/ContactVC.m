@@ -9,17 +9,20 @@
 #import "ContactVC.h"
 #import "IonIcons.h"
 #import "ATRuntime.h"
+#import <SafariServices/SafariServices.h>
 
 @interface ContactVC (){
     IBOutlet UIButton *callButton;
     IBOutlet UIButton *emailButton;
     IBOutlet UIImageView *arrowView;
+    IBOutlet UIImageView *arrowView2;
     IBOutlet UILabel *contactLabel;
     IBOutlet UIView *contactView;
     UITextField *messageField;
     UITextField *nameField;
     UITextField *emailField;
     MFMailComposeViewController *mail;
+    IBOutlet UIView *sourceView;
 }
 
 @end
@@ -32,10 +35,20 @@
     [callButton setImage:[IonIcons imageWithIcon:ioniostelephone size:40 color:[ATRuntime nmcGreen]] forState:UIControlStateNormal];
     [emailButton setImage:[IonIcons imageWithIcon:ioniosemail size:40 color:[ATRuntime nmcGreen]] forState:UIControlStateNormal];
     arrowView.image = [IonIcons imageWithIcon:ioniosarrowforward size:40 color:[UIColor grayColor]];
+    arrowView2.image = [IonIcons imageWithIcon:ioniosarrowforward size:40 color:[UIColor grayColor]];
     contactLabel.text = [[[ATRuntime data] config] objectForKey:@"contactText"];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contactDeveloper)];
     [contactView addGestureRecognizer:tap];
+    
+    UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sourceView)];
+    [sourceView addGestureRecognizer:tap2];
+}
+
+-(void)sourceView{
+    SFSafariViewController *sourceVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:@"https://github.com/apollo-technology/NMCMusic/tree/master/NMCMusic/NMCMusic"]];
+    sourceVC.view.tintColor = [ATRuntime nmcGreen];
+    [self.navigationController pushViewController:sourceVC animated:YES];
 }
 
 -(void)contactDeveloper{
