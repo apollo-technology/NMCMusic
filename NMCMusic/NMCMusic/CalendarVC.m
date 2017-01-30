@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[[ATRuntime data] config] objectForKey:[NSString stringWithFormat:@"calendar%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]]]]]];
+    [webView loadHTMLString:[[[ATRuntime data] config] objectForKey:[NSString stringWithFormat:@"calendar%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]]] baseURL:nil];
 }
 
 - (void)didReceiveMemoryWarning {
