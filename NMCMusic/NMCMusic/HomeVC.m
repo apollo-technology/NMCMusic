@@ -22,32 +22,20 @@
     IBOutlet UIView *pdfView;
     IBOutlet UIView *calendarView;
     IBOutlet UIView *contactView;
-    
-    IBOutlet UILabel *homeMessageLabel;
-    
-    IBOutlet UIButton *chooseGroupButton;
 }
 
 @end
 
 @implementation HomeVC
 
--(void)setHomeMessage{
-    NSString *choirId = [[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"];
-    NSString *homeString = [[[ATRuntime data] config] objectForKey:[NSString stringWithFormat:@"homeMessage%@",choirId]];
-    homeMessageLabel.text = homeString;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    homeMessageLabel.text = @"";
     // Do any additional setup after loading the view.
     musicImageView.image = [IonIcons imageWithIcon:ionmusicnote size:100 color:[ATRuntime nmcGreen]];
     videosImageView.image = [IonIcons imageWithIcon:ionsocialyoutube size:100 color:[ATRuntime nmcGreen]];
     pdfImageView.image = [IonIcons imageWithIcon:iondocumenttext size:100 color:[ATRuntime nmcGreen]];
     calendarImageView.image = [IonIcons imageWithIcon:ioncalendar size:100 color:[ATRuntime nmcGreen]];
     contactImageView.image = [IonIcons imageWithIcon:ionperson size:100 color:[ATRuntime nmcGreen]];
-    [chooseGroupButton setImage:[IonIcons imageWithIcon:ionedit size:50 color:[ATRuntime nmcGreen]] forState:UIControlStateNormal];
     
     UITapGestureRecognizer *songTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(songsTap)];
     [musicView addGestureRecognizer:songTap];
@@ -65,7 +53,7 @@
     [contactView addGestureRecognizer:contactTap];
     
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]) {
-        [self setHomeMessage];
+        //do normal action
     }
 }
 
@@ -121,7 +109,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"choirPref"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self setHomeMessage];
+    //do action
 }
 
 -(void)segueToVC:(NSString *)vcID{

@@ -7,10 +7,12 @@
 //
 
 #import "CalendarVC.h"
+#import "IonIcons.h"
 #import "ATRuntime.h"
 
 @interface CalendarVC (){
     IBOutlet UIWebView *webView;
+    IBOutlet UIBarButtonItem *chooseGroupButton;
 }
 
 @end
@@ -19,23 +21,48 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [webView loadHTMLString:[[[ATRuntime data] config] objectForKey:[NSString stringWithFormat:@"calendar%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]]] baseURL:nil];
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]) {
+        [self selectChoir:nil];
+    } else {
+        [webView loadHTMLString:[[[ATRuntime data] config] objectForKey:[NSString stringWithFormat:@"calendar%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]]] baseURL:nil];
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewDidAppear:(BOOL)animated{
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]) {
+        [self selectChoir:nil];
+    }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(IBAction)selectChoir:(id)sender{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Select a Choir" message:@"You can always change this later by tapping the pencil icon." preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Ragazzo" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setHomeMessageFromChoirPref:@"Ragazzo"];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cantus" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setHomeMessageFromChoirPref:@"Cantus"];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Chamber Singers" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setHomeMessageFromChoirPref:@"ChamberSingers"];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"GT Chorale" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setHomeMessageFromChoirPref:@"GTChorale"];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Canticum Novum" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setHomeMessageFromChoirPref:@"Canticum"];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    alertController.view.tintColor = [ATRuntime nmcGreen];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
-*/
+
+-(void)setHomeMessageFromChoirPref:(NSString *)string{
+    [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"choirPref"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    //do action
+    [webView loadHTMLString:[[[ATRuntime data] config] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"choirPref"]] baseURL:nil];
+}
 
 @end
